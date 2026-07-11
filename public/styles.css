@@ -336,8 +336,7 @@ a:hover { color: var(--wax-strong); }
 .services-note {
   margin-top: 2.25rem;
   max-width: 44em;
-  font-size: 1.05rem;
-  color: var(--ink-soft);
+  font-size: 1.15rem;
 }
 
 /* contact */
