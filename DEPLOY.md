@@ -6,7 +6,7 @@ Infrastructure runbook. Current state and how to reproduce it.
 
 - **Cloudflare Worker** `firstcharter-ai` (account `98725060af1f1ce1d84b3137648c453a`) serves static assets from `public/` and handles `POST /api/contact`
 - **Custom domains** on the Worker: `firstcharter.ai` and `www.firstcharter.ai` (DNS + TLS managed by Cloudflare automatically)
-- **GitHub** repo `first-charter-ai/firstcharter.ai` is the source of truth; Cloudflare Workers Builds deploys on push to `main`
+- **GitHub** repo `firstcharter-ai/firstcharter.ai` is the source of truth; Cloudflare Workers Builds deploys on push to `main`
 - **Email in**: Email Routing forwards `shea@firstcharter.ai` → `shea.conaway@gmail.com`
 - **Email out**: Worker sends contact form notifications from `notifications@firstcharter.ai` via the `send_email` binding (Email Sending, SPF/DKIM/DMARC records auto-managed)
 - **Bot protection**: Cloudflare Turnstile on the contact form; Worker verifies tokens server-side
@@ -30,8 +30,8 @@ npx wrangler@latest deploy                                   # Worker + both cus
 2. **Turnstile widget** (Dashboard → Turnstile → Add widget): hostname `firstcharter.ai`, Managed mode. Then:
    - Put the **site key** in `public/index.html` (replace `TURNSTILE_SITE_KEY` in the `data-sitekey` attribute)
    - Store the **secret key**: `npx wrangler secret put TURNSTILE_SECRET_KEY`
-3. **GitHub org**: create `first-charter-ai` at https://github.com/account/organizations/new (free plan), then push this repo there.
-4. **Workers Builds**: Dashboard → Workers & Pages → firstcharter-ai → Settings → Build → Connect repository (`first-charter-ai/firstcharter.ai`, branch `main`, deploy command `npx wrangler deploy`).
+3. **GitHub org**: create `firstcharter-ai` at https://github.com/account/organizations/new (free plan), then push this repo there.
+4. **Workers Builds**: Dashboard → Workers & Pages → firstcharter-ai → Settings → Build → Connect repository (`firstcharter-ai/firstcharter.ai`, branch `main`, deploy command `npx wrangler deploy`).
 5. **firstcharterai.com redirect** (Dashboard → firstcharterai.com zone):
    - DNS: add A record, name `@`, value `192.0.2.1`, proxied (orange cloud); same for `www`
    - Rules → Redirect Rules → Create: "Redirect from Root and WWW" template, target `https://firstcharter.ai`, 301, preserve path
