@@ -44,12 +44,12 @@
           setStatus('Message sent. We will reply within one business day.', 'ok');
         } else {
           return res.json().catch(function () { return {}; }).then(function (body) {
-            setStatus(body.error || 'Something went wrong. Please email hello@firstcharter.ai instead.', 'err');
+            setStatus(body.error || 'Something went wrong. Please email info@firstcharter.ai instead.', 'err');
           });
         }
       })
       .catch(function () {
-        setStatus('Network error. Please try again, or email hello@firstcharter.ai.', 'err');
+        setStatus('Network error. Please try again, or email info@firstcharter.ai.', 'err');
       })
       .finally(function () {
         button.disabled = false;
