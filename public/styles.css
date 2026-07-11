@@ -333,12 +333,11 @@ a:hover { color: var(--wax-strong); }
   color: var(--wax);
 }
 
-.about-person {
-  margin-top: 3rem;
-  padding-top: 2.5rem;
-  border-top: 1px solid var(--line);
+.services-note {
+  margin-top: 2.25rem;
   max-width: 44em;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
 }
 
 /* contact */
