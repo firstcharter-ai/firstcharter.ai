@@ -81,7 +81,7 @@ async function handleContact(request, env) {
     });
   } catch (error) {
     console.error(`Contact email send failed: ${error.code ?? ''} ${error.message}`);
-    return jsonError(502, 'Could not send your message. Please email shea@firstcharter.ai instead.');
+    return jsonError(502, 'Could not send your message. Please email hello@firstcharter.ai instead.');
   }
 
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers: JSON_HEADERS });
