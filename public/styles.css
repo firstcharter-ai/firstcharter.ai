@@ -161,8 +161,8 @@ a:hover { color: var(--wax-strong); }
 .btn-ghost:hover { background: var(--paper-raised); color: var(--ink); border-color: var(--ink-soft); }
 
 @media (prefers-color-scheme: dark) {
-  .btn { color: #16202B; }
-  .btn:hover { color: #16202B; }
+  .btn:not(.btn-ghost) { color: #16202B; }
+  .btn:not(.btn-ghost):hover { color: #16202B; }
 }
 
 /* ---------- hero ---------- */
