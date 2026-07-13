@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1320">
+<title>Helm · Intake Automation · a First Charter AI demo</title>
+<style>
+  :root{
+    --ink:#22303E; --ink2:#31424F; --bg:#EDF0F3; --paper:#FFFFFF;
+    --line:#D9DFE5; --text:#26313B; --muted:#68737F; --faint:#8B95A0;
+    --ok:#1F7A55; --okbg:#E7F3ED; --warn:#A66A12; --warnbg:#FBF1DE;
+    --info:#2B5E8C; --infobg:#E7EFF6; --sel:#E9EFF5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--text);min-width:1280px;height:100vh;
+       display:flex;flex-direction:column;overflow:hidden}
+
+  .appbar{background:var(--ink);color:#fff;display:flex;align-items:center;gap:14px;
+          padding:0 20px;height:52px;flex:none}
+  .mark{width:26px;height:26px;flex:none}
+  .app-name{font-size:15px;font-weight:600}
+  .app-sub{font-size:12px;color:#B9C4CE;border-left:1px solid #47586A;padding-left:14px}
+  .appbar .spacer{flex:1}
+  .chip-demo{font-size:11px;letter-spacing:.04em;color:#E4D9BE;border:1px solid #6B5B33;
+             background:#33301F;padding:3px 9px;border-radius:99px}
+  .avatar{width:28px;height:28px;border-radius:50%;background:#3E5266;color:#DCE4EB;
+          font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .tickrule{height:7px;flex:none;background:
+    linear-gradient(var(--ink) 1px, transparent 1px) top/100% 7px no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 24px) top/100% 4px no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 120px) top/100% 7px no-repeat,
+    var(--bg)}
+
+  .toolbar{display:flex;align-items:baseline;gap:18px;padding:14px 20px 12px;flex:none}
+  .crumb{font-size:15px;font-weight:600;color:var(--ink)}
+  .runstats{font-size:12.5px;color:var(--muted)}
+  .runstats b{color:var(--text);font-weight:600}
+  .toolbar .spacer{flex:1}
+  .filter{font-size:12px;font-weight:600;color:var(--ink2);background:var(--paper);
+          border:1px solid var(--line);border-radius:99px;padding:5px 13px;margin-left:6px}
+  .filter.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  .main{flex:1;display:flex;gap:14px;padding:0 20px 14px;min-height:0}
+
+  /* Queue */
+  .queue{width:46%;flex:none;background:var(--paper);border:1px solid var(--line);
+         border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+           font-weight:600;text-align:left;padding:11px 14px 9px;border-bottom:1px solid var(--line);
+           background:#F7F9FA}
+  tbody td{padding:11px 14px;border-bottom:1px solid #F0F2F5;font-size:13px;vertical-align:top}
+  .from b{display:block;font-weight:600;color:var(--text)}
+  .from span{font-size:11.5px;color:var(--faint)}
+  .proj{color:var(--text)}
+  .proj span{display:block;font-size:11.5px;color:var(--faint)}
+  .when{color:var(--muted);font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .stchip{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
+  .st-draft{color:var(--info);background:var(--infobg)}
+  .st-sent{color:var(--ok);background:var(--okbg)}
+  .st-review{color:var(--warn);background:var(--warnbg)}
+  .st-booked{color:#fff;background:var(--ok)}
+  tr.active td{background:var(--sel)}
+  tr.active td:first-child{box-shadow:inset 3px 0 0 var(--ink)}
+
+  /* Detail */
+  .detail{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:8px;
+          display:flex;flex-direction:column;overflow:hidden}
+  .d-head{padding:14px 18px 12px;border-bottom:1px solid #EDF0F3;display:flex;align-items:center;gap:12px}
+  .d-head h2{font-size:15px;font-weight:600;color:var(--ink)}
+  .d-head .stchip{margin-left:auto}
+  .d-body{flex:1;overflow:auto;padding:14px 18px}
+  .lbl{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+       font-weight:600;margin:12px 0 6px}
+  .lbl:first-child{margin-top:0}
+  .email{background:#F7F8F9;border:1px solid #EDF0F3;border-radius:8px;padding:12px 14px;
+         font-size:12.5px;color:var(--ink2);line-height:1.55}
+  .email .hdr{font-size:11.5px;color:var(--faint);margin-bottom:8px}
+  .email .hdr b{color:var(--muted);font-weight:600}
+  .fields{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .fld{background:#F7F8F9;border:1px solid #EDF0F3;border-radius:7px;padding:8px 10px}
+  .fld .k{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .fld .v{font-size:12.5px;font-weight:600;color:var(--text);margin-top:2px}
+  .fld.hot{background:var(--okbg);border-color:#CBE5D8}
+  .route{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:12px;color:var(--muted)}
+  .route .stchip{font-size:10.5px}
+  .draft{border:1px solid #D3DCE4;border-radius:8px;overflow:hidden}
+  .draft .bar{background:#F2F5F8;border-bottom:1px solid #E3E9EF;padding:7px 12px;
+              font-size:11px;color:var(--muted);display:flex;gap:14px}
+  .draft .bar b{color:var(--ink2);font-weight:600}
+  .draft .txt{padding:12px 14px;font-size:13px;line-height:1.6;color:var(--text)}
+  .sig{color:var(--muted)}
+  .d-foot{border-top:1px solid #EDF0F3;padding:12px 18px;display:flex;gap:8px;align-items:center}
+  .btn{font-size:12.5px;font-weight:600;border-radius:6px;padding:8px 14px;border:1px solid transparent}
+  .btn-primary{background:var(--ink);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .synced{margin-left:auto;font-size:11.5px;color:var(--ok);font-weight:600}
+
+  .fcbadge{flex:none;display:flex;align-items:center;justify-content:flex-end;gap:8px;
+           padding:0 20px 10px;font-size:11px;color:var(--faint)}
+  .fcbadge svg{width:16px;height:16px;opacity:.65}
+  .fcbadge a{color:inherit;text-decoration:none}
+  .fcbadge a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+  <header class="appbar">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="11" fill="none" stroke="#DCE4EB" stroke-width="1.8"/>
+      <circle cx="16" cy="16" r="3" fill="none" stroke="#E8C97A" stroke-width="1.8"/>
+      <g stroke="#DCE4EB" stroke-width="1.8" stroke-linecap="round">
+        <line x1="16" y1="1.5" x2="16" y2="7"/><line x1="16" y1="25" x2="16" y2="30.5"/>
+        <line x1="1.5" y1="16" x2="7" y2="16"/><line x1="25" y1="16" x2="30.5" y2="16"/>
+        <line x1="5.8" y1="5.8" x2="9.5" y2="9.5"/><line x1="22.5" y1="22.5" x2="26.2" y2="26.2"/>
+        <line x1="5.8" y1="26.2" x2="9.5" y2="22.5"/><line x1="22.5" y1="9.5" x2="26.2" y2="5.8"/>
+      </g>
+    </svg>
+    <span class="app-name">Helm</span>
+    <span class="app-sub">Inquiry intake for Wrenfield Design + Build</span>
+    <span class="spacer"></span>
+    <span class="chip-demo">DEMO · FICTIONAL CLIENT &amp; DATA</span>
+    <span class="avatar">WD</span>
+  </header>
+  <div class="tickrule"></div>
+
+  <div class="toolbar">
+    <span class="crumb">New inquiries</span>
+    <span class="runstats">This week: <b>34</b> received · <b>31</b> replies drafted automatically · median <b>2m 40s</b> from email to draft</span>
+    <span class="spacer"></span>
+    <span class="filter on">All sources</span>
+    <span class="filter">Email</span>
+    <span class="filter">Website form</span>
+    <span class="filter">Voicemail</span>
+  </div>
+
+  <div class="main">
+
+    <section class="queue">
+      <table>
+        <thead>
+          <tr><th>Received</th><th>From</th><th>Project</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="when">9:41 am</td>
+            <td class="from"><b>Dan Okafor</b><span>Website form</span></td>
+            <td class="proj">Deck + screened porch<span>Bon Air</span></td>
+            <td><span class="stchip st-review">Needs review</span></td>
+          </tr>
+          <tr class="active">
+            <td class="when">8:57 am</td>
+            <td class="from"><b>Sarah Whitcomb</b><span>Email</span></td>
+            <td class="proj">Kitchen remodel<span>Westhampton</span></td>
+            <td><span class="stchip st-draft">Reply drafted</span></td>
+          </tr>
+          <tr>
+            <td class="when">8:12 am</td>
+            <td class="from"><b>The Hendersons</b><span>Voicemail transcript</span></td>
+            <td class="proj">Primary bath<span>Ginter Park</span></td>
+            <td><span class="stchip st-draft">Reply drafted</span></td>
+          </tr>
+          <tr>
+            <td class="when">Yesterday</td>
+            <td class="from"><b>Priya Raman</b><span>Website form</span></td>
+            <td class="proj">Whole-home reno<span>Church Hill</span></td>
+            <td><span class="stchip st-booked">Consult booked</span></td>
+          </tr>
+          <tr>
+            <td class="when">Yesterday</td>
+            <td class="from"><b>Mike Delgado</b><span>Email</span></td>
+            <td class="proj">Garage conversion<span>Lakeside</span></td>
+            <td><span class="stchip st-sent">Reply sent</span></td>
+          </tr>
+          <tr>
+            <td class="when">Yesterday</td>
+            <td class="from"><b>J. &amp; T. Boyle</b><span>Website form</span></td>
+            <td class="proj">Kitchen refresh<span>Midlothian</span></td>
+            <td><span class="stchip st-sent">Reply sent</span></td>
+          </tr>
+          <tr>
+            <td class="when">Jul 10</td>
+            <td class="from"><b>Unknown sender</b><span>Email</span></td>
+            <td class="proj">Vendor solicitation<span>Filtered out</span></td>
+            <td><span class="stchip st-review">Not a lead</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="detail">
+      <div class="d-head">
+        <h2>Sarah Whitcomb · Kitchen remodel</h2>
+        <span class="stchip st-draft">Reply drafted · waiting on your approval</span>
+      </div>
+      <div class="d-body">
+
+        <div class="lbl">Original email · 8:57 am</div>
+        <div class="email">
+          <div class="hdr"><b>From:</b> s.whitcomb@gmail.com &nbsp;·&nbsp; <b>Subject:</b> Kitchen renovation quote?</div>
+          Hi! We're in Westhampton and thinking about finally redoing our kitchen (house is a 1948 brick colonial,
+          kitchen is original-ish). Probably want to take down the wall to the dining room, new cabinets, the works.
+          Hoping to start in the fall. Our budget is somewhere in the 75–100k range depending on what's possible.
+          Found you on Google; the Libbie Ave project on your site looks exactly like what we want. Can someone
+          come take a look? &nbsp;Sarah (804-555-0173)
+        </div>
+
+        <div class="lbl">What Helm pulled out</div>
+        <div class="fields">
+          <div class="fld"><div class="k">Name</div><div class="v">Sarah Whitcomb</div></div>
+          <div class="fld"><div class="k">Phone</div><div class="v">(804) 555-0173</div></div>
+          <div class="fld"><div class="k">Neighborhood</div><div class="v">Westhampton</div></div>
+          <div class="fld"><div class="k">Source</div><div class="v">Google search</div></div>
+          <div class="fld"><div class="k">Project</div><div class="v">Kitchen remodel + wall removal</div></div>
+          <div class="fld hot"><div class="k">Budget</div><div class="v">$75–100k</div></div>
+          <div class="fld"><div class="k">Timeline</div><div class="v">Fall 2026</div></div>
+          <div class="fld hot"><div class="k">Fit score</div><div class="v">Strong · book consult</div></div>
+        </div>
+
+        <div class="lbl">Drafted reply</div>
+        <div class="draft">
+          <div class="bar"><span><b>To:</b> s.whitcomb@gmail.com</span><span><b>From:</b> hello@wrenfielddb.com</span><span><b>Tone:</b> your voice, trained on 40 past replies</span></div>
+          <div class="txt">
+            Hi Sarah, thanks for reaching out, and glad the Libbie Ave kitchen caught your eye. A 1948 colonial
+            with a wall opening to the dining room is right in our wheelhouse; we'd want to confirm what's load-bearing,
+            but that range is realistic for the scope you're describing.
+            <br><br>
+            We'd love to come take a look. We have consult openings next Tuesday (7/21) morning or Thursday (7/23)
+            after 3pm. Do either of those work? It's about 45 minutes, no charge, and you'll leave with a rough
+            range and a sense of timeline.
+            <br><br>
+            <span class="sig">Mara Wrenfield · Wrenfield Design + Build · (804) 555-0122</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="d-foot">
+        <span class="btn btn-primary">Approve &amp; send</span>
+        <span class="btn btn-ghost">Edit reply</span>
+        <span class="btn btn-ghost">Mark not a fit</span>
+        <span class="synced">✓ Logged to your CRM · calendar holds placed</span>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="fcbadge">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="4"/>
+      <text x="32" y="42" text-anchor="middle" font-size="26" font-weight="600" fill="currentColor" font-family="Georgia,serif">FC</text>
+    </svg>
+    <a href="/">Built by First Charter AI · back to firstcharter.ai</a>
+  </div>
+
+</body>
+</html>
