@@ -2,7 +2,4 @@
 node_modules/
 .wrangler/
 .dev.vars
-/resume.pdf
 /profile.jpg
-/coi/
-/upwork/
