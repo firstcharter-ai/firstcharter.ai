@@ -617,3 +617,16 @@ textarea {
     padding-block: 44px 55px;
   }
 }
+
+.service-row p.session-price {
+  margin-top: 14px;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.session-price strong {
+  color: var(--blue);
+  font-size: 1.65rem;
+  letter-spacing: -0.025em;
+  margin-right: 4px;
+  font-weight: 650;
+}

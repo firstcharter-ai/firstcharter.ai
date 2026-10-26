@@ -1,6 +1,6 @@
 # firstcharter.ai
 
-Website for First Charter AI: tailored AI guidance, training, setup, implementation, and continuing support for individuals, independent professionals, and small teams. Based in Richmond, preparing to serve local and remote clients. Initial consultations will be complimentary at launch. Public pricing is intentionally omitted.
+Website for First Charter AI: tailored AI guidance, training, setup, implementation, and continuing support for individuals, independent professionals, and small teams. Based in Richmond, preparing to serve local and remote clients. Initial consultations will be complimentary at launch. Planned launch pricing is $150 for a 60-minute personal AI session, including a brief written recap. Setup projects, team training, and continuing support are quoted separately.
 
 **Live site:** https://firstcharter.ai
 
