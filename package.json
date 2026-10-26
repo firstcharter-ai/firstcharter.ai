@@ -1,5 +1,11 @@
 {
   "devDependencies": {
-    "playwright": "^1.61.1"
+    "playwright": "^1.61.1",
+    "wrangler": "4.153.0"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "node scripts/check-demo-models.mjs",
+    "deploy": "wrangler deploy"
   }
 }

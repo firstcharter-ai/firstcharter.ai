@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="30" fill="#9A3B3B"/>
-  <circle cx="32" cy="32" r="24.5" fill="none" stroke="#FBFAF7" stroke-width="1.5"/>
-  <text x="32" y="39.5" text-anchor="middle" font-family="Georgia, 'EB Garamond', serif" font-size="22" font-weight="600" fill="#FBFAF7" letter-spacing="0.5">FC</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="white"/><circle cx="32" cy="32" r="28" fill="none" stroke="#2258a0" stroke-width="2"/><path d="M32 5 39 25 59 32 39 39 32 59 25 39 5 32 25 25Z" fill="#e2ebf8" stroke="#2258a0" stroke-width="1.5"/><path d="m32 10 7 22-7 22-7-22Z" fill="#2258a0"/><path d="m32 32 7 0-7 22Z" fill="#8cabd2"/><circle cx="32" cy="32" r="3" fill="white"/></svg>

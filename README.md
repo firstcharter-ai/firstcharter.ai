@@ -1,29 +1,26 @@
 # firstcharter.ai
 
-Website for First Charter AI, an AI consulting practice for small businesses in Richmond, Virginia.
+Website for First Charter AI: tailored AI guidance, training, setup, implementation, and continuing support for individuals, independent professionals, and small teams. Based in Richmond, serving local and remote clients. Initial consultations are complimentary. Public pricing is intentionally omitted.
 
 **Live site:** https://firstcharter.ai
 
 ## Structure
 
-- `public/` — static site (plain HTML/CSS/JS, no build step)
-- `src/index.js` — Cloudflare Worker serving `POST /api/contact` (Turnstile verification + email notification)
-- `wrangler.jsonc` — Worker config: static assets from `public/`, `send_email` binding, custom domain
+- `public/` — responsive static HTML/CSS/JS; no build step
+- `public/demos/` — three interactive guided examples with fictional data; no live AI calls or connected accounts
+- `public/credits.html` — photography provenance and public-domain licenses
+- `src/index.js` — existing contact Worker: Turnstile verification and email notification
+- `wrangler.jsonc` — static assets, email binding, and custom domains
+- `scripts/check-demo-models.mjs` — deterministic proposal and financial model checks
 
-## Local development
+## Development and checks
 
-```
-npx wrangler dev
-```
+Run `npm ci`, then `npm run dev` for the Worker and assets at http://localhost:8787. The production Turnstile key is domain-restricted; localhost cannot validate that widget. Do not send test email to verify visual changes.
 
-Serves the site and the contact endpoint at http://localhost:8787.
+Run `npm test` for demo calculations and `npm run deploy -- --dry-run` for packaging validation. Check desktop and mobile layouts and interactive source dialogs, proposal choices, calendar actions, and financial scenario controls before deployment.
 
 ## Deployment
 
-Pushing to `main` deploys automatically via Cloudflare Workers Builds. Manual deploy:
+The existing `main` branch is configured for Cloudflare Workers Builds. Manual deployment uses `npm run deploy` and requires Workers deployment permissions. Wrangler is pinned locally in `package.json` and the lockfile. See [DEPLOY.md](DEPLOY.md) for infrastructure context.
 
-```
-npx wrangler deploy
-```
-
-See [DEPLOY.md](DEPLOY.md) for the full infrastructure runbook (DNS, redirects, Email Routing, Turnstile).
+Only this nested website repository is public. Its parent company repository is local-only and must never be pushed or included in a deployment.

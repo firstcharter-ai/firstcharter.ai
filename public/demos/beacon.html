@@ -1,196 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1320">
-<title>Beacon · Website FAQ Assistant · a First Charter AI demo</title>
-<style>
-  :root{
-    --ink:#22303E; --ink2:#31424F;
-    --site-red:#9A3B2E; --site-cream:#FBF8F3; --site-line:#E7E0D4;
-    --text:#2B3138; --muted:#6B7280; --faint:#98A1AB;
-    --wg-bg:#FFFFFF; --wg-line:#DDE3E9; --bubble:#EFF2F5;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-       background:var(--site-cream);color:var(--text);min-width:1280px;min-height:100vh}
-
-  /* ---------- Client site ---------- */
-  .site-head{display:flex;align-items:center;gap:36px;padding:0 56px;height:76px;
-             background:var(--site-cream);border-bottom:1px solid var(--site-line)}
-  .logo{display:flex;align-items:center;gap:12px}
-  .logo-mark{width:38px;height:38px}
-  .logo-name{font-family:Georgia,"Times New Roman",serif;font-size:19px;font-weight:700;
-             color:var(--ink);line-height:1.15}
-  .logo-name small{display:block;font-family:-apple-system,sans-serif;font-size:10px;
-                   font-weight:600;letter-spacing:.14em;color:var(--site-red);text-transform:uppercase}
-  nav{display:flex;gap:28px;margin-left:auto;font-size:13.5px;font-weight:500;color:var(--ink2)}
-  nav span{cursor:default}
-  .phone{font-weight:700;color:var(--site-red);font-size:15px;margin-left:12px}
-
-  .hero{display:flex;align-items:center;gap:64px;padding:72px 56px 56px;max-width:1220px}
-  .hero-copy{max-width:560px}
-  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-           color:var(--site-red);margin-bottom:14px}
-  h1{font-family:Georgia,"Times New Roman",serif;font-size:46px;line-height:1.12;
-     font-weight:700;color:var(--ink);margin-bottom:18px}
-  .lede{font-size:17px;color:var(--muted);max-width:46ch;margin-bottom:26px}
-  .cta{display:inline-block;background:var(--site-red);color:#fff;font-weight:600;
-       font-size:14.5px;padding:13px 26px;border-radius:4px;margin-right:14px}
-  .cta-ghost{display:inline-block;color:var(--ink);font-weight:600;font-size:14.5px;
-             padding:13px 4px;border-bottom:2px solid var(--site-line)}
-  .trust{display:flex;gap:30px;margin-top:38px;font-size:12.5px;color:var(--muted)}
-  .trust b{display:block;font-family:Georgia,serif;font-size:21px;color:var(--ink);font-weight:700}
-
-  .hero-art{flex:1;align-self:stretch;min-height:380px;border-radius:8px;position:relative;overflow:hidden;
-            background:linear-gradient(160deg,#31424F,#22303E)}
-  .hero-art svg{position:absolute;inset:0;width:100%;height:100%}
-  .hero-art .caption{position:absolute;left:22px;bottom:18px;color:#B9C4CE;font-size:12px}
-
-  .band{display:flex;gap:44px;padding:26px 56px;border-top:1px solid var(--site-line);
-        font-size:13px;color:var(--muted);align-items:center}
-  .band b{color:var(--ink)}
-  .stars{color:#C79A3D;letter-spacing:2px}
-
-  /* ---------- Beacon widget ---------- */
-  .widget{position:fixed;right:34px;bottom:30px;width:392px;background:var(--wg-bg);
-          border:1px solid var(--wg-line);border-radius:14px;overflow:hidden;
-          box-shadow:0 18px 50px rgba(34,48,62,.28);display:flex;flex-direction:column}
-  .wg-head{background:var(--ink);color:#fff;padding:14px 16px;display:flex;gap:11px;align-items:center}
-  .wg-beacon{width:30px;height:30px;flex:none}
-  .wg-title{font-size:14px;font-weight:600}
-  .wg-sub{font-size:11.5px;color:#AEBBC7;margin-top:1px}
-  .wg-dot{margin-left:auto;width:8px;height:8px;border-radius:50%;background:#4CC38A;flex:none}
-  /* signature tick rule, widget edition */
-  .wg-tick{height:5px;background:
-    repeating-linear-gradient(90deg,#22303E 0 1px,transparent 1px 18px) top/100% 3px no-repeat,#fff}
-
-  .wg-body{padding:14px 14px 6px;display:flex;flex-direction:column;gap:10px;background:#FAFBFC}
-  .msg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:13.5px;line-height:1.5}
-  .msg.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px}
-  .msg.bot{align-self:flex-start;background:var(--bubble);color:var(--text);border-bottom-left-radius:4px}
-  .msg.bot b{color:var(--ink)}
-  .sources{align-self:flex-start;display:flex;gap:6px;margin:-4px 0 2px 2px}
-  .src{font-size:10.5px;font-weight:600;color:var(--ink2);background:#fff;border:1px solid var(--wg-line);
-       border-radius:99px;padding:2px 9px}
-  .src::before{content:"§ ";color:var(--faint)}
-  .wg-note{font-size:11px;color:var(--faint);text-align:center;padding:4px 0 2px}
-  .wg-input{margin:8px 14px 12px;display:flex;align-items:center;gap:10px;background:#fff;
-            border:1px solid var(--wg-line);border-radius:10px;padding:11px 14px}
-  .wg-input .ph{flex:1;font-size:13px;color:var(--faint)}
-  .send{width:26px;height:26px;flex:none}
-  .wg-foot{border-top:1px solid #EEF1F4;padding:7px;text-align:center;font-size:10.5px;color:var(--faint)}
-
-  .demo-tag{position:fixed;left:34px;bottom:30px;font-size:11px;letter-spacing:.05em;
-            color:#7A6A45;background:#F5EDDC;border:1px solid #DFD2B4;border-radius:99px;padding:5px 12px}
-  .demo-tag a{color:inherit}
-</style>
-</head>
-<body>
-
-  <!-- Sample client website -->
-  <header class="site-head">
-    <div class="logo">
-      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
-        <circle cx="20" cy="20" r="18" fill="none" stroke="#22303E" stroke-width="2.5"/>
-        <path d="M11 24c3-7 6-10 9-10s6 3 9 10" fill="none" stroke="#9A3B2E" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M13 28h14" stroke="#22303E" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
-      <div class="logo-name">Fernwick<br>Heating &amp; Air<small>Richmond, Virginia</small></div>
-    </div>
-    <nav>
-      <span>Services</span><span>Service area</span><span>Maintenance plans</span><span>About</span><span>Contact</span>
-      <span class="phone">(804) 555-0198</span>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow">Heating · Cooling · Since 1987</p>
-      <h1>Keeping Richmond comfortable for three generations.</h1>
-      <p class="lede">Family-owned HVAC service and installation across Richmond and Central Virginia. Straight answers, tidy work, and a truck at your door when we say so.</p>
-      <span class="cta">Request service</span>
-      <span class="cta-ghost">See maintenance plans</span>
-      <div class="trust">
-        <div><b>4.9</b>612 Google reviews</div>
-        <div><b>38</b>years in business</div>
-        <div><b>24/7</b>emergency line</div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beacon: Your week, brought into focus · First Charter AI</title>
+    <meta
+      name="description"
+      content="Bring together appointments, correspondence, and ongoing projects. Identify what needs attention, prepare a useful brief, and draft your next steps."
+    />
+    <link rel="canonical" href="https://firstcharter.ai/demos/beacon" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      property="og:title"
+      content="Beacon: Your week, brought into focus · First Charter AI"
+    />
+    <meta
+      property="og:description"
+      content="Bring together appointments, correspondence, and ongoing projects. Identify what needs attention, prepare a useful brief, and draft your next steps."
+    />
+    <meta
+      property="og:image"
+      content="https://firstcharter.ai/assets/richmond-river.jpg"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://firstcharter.ai/demos/beacon" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/demos/demo.css" />
+  </head>
+  <body data-demo="beacon">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="First Charter AI home"
+        ><svg class="seal compass" viewBox="0 0 64 64" aria-hidden="true">
+          <circle
+            cx="32"
+            cy="32"
+            r="28"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          />
+          <path
+            d="M32 7 38 26 57 32 38 38 32 57 26 38 7 32 26 26Z"
+            fill="none"
+            stroke="currentColor"
+          />
+          <path d="m32 12 6 20-6 20-6-20Z" fill="currentColor" />
+          <circle cx="32" cy="32" r="3" fill="white" /></svg
+        ><span>First Charter AI</span></a
+      >
+      <nav aria-label="Main">
+        <a href="/#services">Services</a><a href="/#demos">Demos</a
+        ><a href="/#about">About</a
+        ><a class="btn small" href="/#contact">Get in touch</a>
+      </nav>
+    </header>
+    <main id="main" class="wrap demo-main">
+      <div class="demo-heading">
+        <div>
+          <a class="text-link" href="/#demos">← All demos</a>
+          <p class="eyebrow">Beacon / Interactive example</p>
+          <h1>Your week, brought into focus</h1>
+          <p class="lede">
+            Bring together appointments, correspondence, and ongoing projects.
+            Identify what needs attention, prepare a useful brief, and draft
+            your next steps.
+          </p>
+        </div>
+        <span class="sample-label">Fictional data · Guided demo</span>
       </div>
-    </div>
-    <div class="hero-art">
-      <svg viewBox="0 0 480 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <rect width="480" height="400" fill="none"/>
-        <g stroke="#46586B" stroke-width="1" opacity=".55">
-          <line x1="0" y1="330" x2="480" y2="330"/>
-          <line x1="0" y1="360" x2="480" y2="360"/>
-        </g>
-        <g fill="none" stroke="#8FA3B5" stroke-width="2.4" stroke-linecap="round">
-          <rect x="150" y="180" width="180" height="150" rx="4"/>
-          <path d="M130 190 L240 110 L350 190" stroke-width="3"/>
-          <rect x="215" y="250" width="50" height="80"/>
-          <rect x="172" y="212" width="34" height="30"/>
-          <rect x="274" y="212" width="34" height="30"/>
-        </g>
-        <g fill="none" stroke="#C79A3D" stroke-width="2.4" stroke-linecap="round">
-          <rect x="356" y="292" width="52" height="38" rx="3"/>
-          <circle cx="382" cy="311" r="11"/>
-          <path d="M382 304v14M375 311h14" stroke-width="1.6"/>
-        </g>
-        <g stroke="#C79A3D" stroke-width="2" stroke-linecap="round" opacity=".85">
-          <path d="M300 96c6-8 0-14 6-22M318 96c6-8 0-14 6-22M336 96c6-8 0-14 6-22"/>
-        </g>
-      </svg>
-      <span class="caption">Install · repair · seasonal tune-ups</span>
-    </div>
-  </section>
-
-  <div class="band">
-    <span class="stars">★★★★★</span>
-    <span>&ldquo;Called at 7am, compressor running by lunch. <b>These folks are the real thing.</b>&rdquo; · Marcus T., Forest Hill</span>
-    <span><b>Licensed &amp; insured</b> · VA HVAC #2705-555555</span>
-  </div>
-
-  <!-- Beacon widget -->
-  <aside class="widget">
-    <div class="wg-head">
-      <svg class="wg-beacon" viewBox="0 0 32 32" aria-hidden="true">
-        <path d="M16 4 L20 24 H12 Z" fill="none" stroke="#E8C97A" stroke-width="1.8" stroke-linejoin="round"/>
-        <circle cx="16" cy="6" r="2.4" fill="#E8C97A"/>
-        <path d="M8 9c-1.8 2-1.8 4 0 6M24 9c1.8 2 1.8 4 0 6" fill="none" stroke="#DCE4EB" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M9 26h14" stroke="#DCE4EB" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      <div>
-        <div class="wg-title">Ask Fernwick Heating &amp; Air</div>
-        <div class="wg-sub">Answers from our site &amp; service docs · a person can take over anytime</div>
-      </div>
-      <span class="wg-dot"></span>
-    </div>
-    <div class="wg-tick"></div>
-
-    <div class="wg-body">
-      <div class="msg bot">Hi! I can answer questions about our services, pricing, and scheduling. What can I help with?</div>
-
-      <div class="msg user">Do you do weekend service calls in Chesterfield?</div>
-      <div class="msg bot">Yes. <b>Chesterfield County is in our service area</b>, and we run calls 7 days a week. Weekend and after-hours visits are billed at $165 for the first hour, then our standard rate. For no-cooling emergencies, the 24/7 line is (804) 555-0198.</div>
-      <div class="sources"><span class="src">Service area</span><span class="src">Pricing</span></div>
-
-      <div class="msg user">How much is an AC tune-up?</div>
-      <div class="msg bot">A standard AC tune-up is <b>$129</b>. If you join the Comfort Club plan ($22/mo), spring and fall tune-ups are included and repairs are discounted 15%. Want me to check the next open tune-up slot?</div>
-      <div class="sources"><span class="src">Maintenance plans</span><span class="src">Tune-up checklist</span></div>
-
-      <div class="wg-note">Beacon cites its sources · updated nightly from fernwickhvac.com</div>
-    </div>
-
-    <div class="wg-input">
-      <span class="ph">Ask about services, scheduling, pricing…</span>
-      <svg class="send" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 4l16 8-16 8 4-8z" fill="#22303E"/>
-      </svg>
-    </div>
-    <div class="wg-foot">Beacon · built by First Charter AI</div>
-  </aside>
-
-  <span class="demo-tag">DEMO · FICTIONAL BUSINESS &amp; SAMPLE DATA · <a href="/">back to firstcharter.ai</a></span>
-
-</body>
+      <p class="demo-disclosure">
+        Explore a sample workflow. Responses are prepared examples, with
+        calculations and choices that run in your browser. No live AI, connected
+        accounts, or messages are sent.
+      </p>
+      <div id="demo-app"></div>
+      <section class="demo-end">
+        <h2>What would this look like for you?</h2>
+        <p>
+          We tailor the workflow to your needs, teach you to use it, and provide
+          an agreed level of continuing guidance and improvement as the tools
+          evolve. Your initial consultation is complimentary.
+        </p>
+        <a class="btn" href="/#contact"
+          >Request a complimentary consultation →</a
+        >
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p><strong>First Charter AI</strong> · Richmond, Virginia</p>
+      <p>© 2026 First Charter AI LLC · <a href="/credits">Photo credits</a></p>
+    </footer>
+    <script type="module" src="/demos/demo.mjs"></script>
+  </body>
 </html>

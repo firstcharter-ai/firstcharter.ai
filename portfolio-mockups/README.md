@@ -1,70 +1,11 @@
-# Portfolio demo mockups
+# Interactive website examples
 
-The three demo pages live in `public/demos/` and are served on the live site
-(linked from the homepage "Demos" section):
+The public demos are responsive, browser-based guided examples. They use fictional sample data and prepared narrative responses. They are not live ChatGPT or Claude integrations, production client work, or evidence of achieved client outcomes. The arithmetic and choices are functional; no accounts are connected and no messages are sent.
 
-- `/demos/manifest.html` — Manifest, document intelligence (invoice extraction)
-- `/demos/beacon.html` — Beacon, website FAQ assistant (RAG chatbot)
-- `/demos/helm.html` — Helm, inquiry intake automation
+- **Helm — Client work, simplified:** discovery notes and an illustrative rate card lead to a proposal, an approver check, an optional follow-up, onboarding tasks, and a draft workshop agenda. Prices belong to the fictional consultant, not First Charter AI.
+- **Beacon — Your week, brought into focus:** source-backed weekly brief, calendar conflict, incomplete home-project quote, and reviewable email draft. Calendar changes and draft approval are simulated.
+- **Manifest — Make sense of the numbers:** profit-to-cash explanation and a deterministic three-month cash scenario with adjustable equipment, staffing, and invoice collection timing. Assumptions and exclusions are inspectable.
 
-All three use fictional businesses and sample data and are labeled as demos
-in the UI, so they are honest to use as portfolio images.
+Implementation: `public/demos/{helm,beacon,manifest}.html`, shared `demo.css` and `demo.mjs`. Existing clean URLs remain unchanged. `scripts/check-demo-models.mjs` verifies the fee and cash arithmetic.
 
-Naming policy: every business name in the demos is invented (Fernwick,
-Quillbrook, Wrenfield, Ironbell, Copperline, Greyfeather, Foxhollow, Kestrel,
-Lanternbury, Gritwell) and was checked against a web search for collisions
-with real companies. If you add or change a name, search it first; a demo
-bearing a real company's name misrepresents them as a client.
-
-## Screenshotting for Upwork
-
-Open each page in a browser window at roughly 1440x900, hide bookmarks bar,
-and capture the window content (Cmd+Shift+4, then Space, then click the
-window; hold Cmd while clicking to omit the drop shadow). Upwork portfolio
-images look best at 16:9 or wider.
-
-```sh
-open public/demos/manifest.html
-open public/demos/beacon.html
-open public/demos/helm.html
-```
-
-## One-paragraph business framing (paste into each Upwork portfolio item)
-
-### Manifest — invoice & document extraction
-
-> Small businesses lose hours every week retyping invoices, contracts, and
-> paperwork into their books. Manifest is a document intelligence demo built
-> for a custom cabinetry shop: it reads a morning's worth of invoices
-> (PDFs, email bodies, even phone photos), extracts vendor, terms, line
-> items, and totals, and verifies that the line items and tax reconcile to
-> the stated total before anything is approved. Fields the model is not
-> confident about, like a handwritten PO number, are flagged for a person
-> instead of silently guessed. Approved documents export to CSV or push
-> straight to QuickBooks. Built with LLM-based extraction plus deterministic
-> validation, the same architecture I use for client document workflows.
-
-### Beacon — website FAQ assistant (RAG)
-
-> Most small-business chatbots fail because they make things up. Beacon is a
-> retrieval-augmented FAQ assistant shown here on a fictional HVAC
-> contractor's website: it answers customer questions about service area,
-> pricing, and scheduling using only the company's own pages and documents,
-> and it cites the source for every answer. Content is re-indexed nightly so
-> answers track the site, and the widget hands off to a human whenever the
-> customer asks or the answer is not in the sources. The same pattern works
-> for any service business that answers the same twenty questions by phone
-> every week.
-
-### Helm — inquiry intake automation
-
-> For a services business, the first hour after an inquiry arrives is where
-> jobs are won and lost. Helm is an intake automation demo for a fictional
-> design-build remodeler: it reads incoming email, website form, and
-> voicemail-transcript inquiries, extracts the details that matter (project
-> type, neighborhood, budget band, timeline), filters out vendor spam,
-> scores fit, logs the lead to the CRM, and drafts a reply in the owner's
-> own voice with real consult openings from the calendar. Nothing is sent
-> without the owner's approval. The result in this scenario: every qualified
-> lead answered the same morning, with a median of under three minutes from
-> email to drafted reply.
+These show possible starting points for a tailored engagement. The service positioning is continuing expert guidance and training, with tools and workflows adapted as client needs and AI capabilities evolve.
