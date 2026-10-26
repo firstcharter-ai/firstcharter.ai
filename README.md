@@ -1,6 +1,6 @@
 # firstcharter.ai
 
-Website for First Charter AI: tailored AI guidance, training, setup, implementation, and continuing support for individuals, independent professionals, and small teams. Based in Richmond, serving local and remote clients. Initial consultations are complimentary. Public pricing is intentionally omitted.
+Website for First Charter AI: tailored AI guidance, training, setup, implementation, and continuing support for individuals, independent professionals, and small teams. Based in Richmond, preparing to serve local and remote clients. Initial consultations will be complimentary at launch. Public pricing is intentionally omitted.
 
 **Live site:** https://firstcharter.ai
 
@@ -8,7 +8,7 @@ Website for First Charter AI: tailored AI guidance, training, setup, implementat
 
 - `public/` — responsive static HTML/CSS/JS; no build step
 - `public/demos/` — three interactive guided examples with fictional data; no live AI calls or connected accounts
-- `public/credits.html` — photography provenance and public-domain licenses
+- `public/credits.html` — photography provenance and commercial-use licenses
 - `src/index.js` — existing contact Worker: Turnstile verification and email notification
 - `wrangler.jsonc` — static assets, email binding, and custom domains
 - `scripts/check-demo-models.mjs` — deterministic proposal and financial model checks

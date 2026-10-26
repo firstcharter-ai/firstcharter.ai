@@ -22,7 +22,7 @@
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
+  scroll-padding-top: 115px;
 }
 body {
   margin: 0;
@@ -97,13 +97,17 @@ img {
   margin-inline: auto;
 }
 .site-header {
-  width: min(1280px, calc(100% - 64px));
-  margin: auto;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  margin: 0;
+  background: var(--white);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  padding: 25px 0;
+  padding: 25px max(32px, calc((100% - 1280px) / 2));
   border-bottom: 1px solid var(--line);
 }
 .brand {
@@ -206,15 +210,15 @@ img {
 }
 .hero-photo {
   position: relative;
-  align-self: stretch;
-  min-height: 450px;
+  align-self: center;
+  min-height: 0;
 }
 .hero-photo img {
-  height: 100%;
+  height: auto;
   width: 100%;
   object-fit: cover;
   border-radius: 8px;
-  object-position: 55% center;
+  object-position: 36% center;
 }
 .hero-photo figcaption {
   position: absolute;
@@ -466,7 +470,7 @@ textarea {
   left: 20px;
   top: -100px;
   background: white;
-  z-index: 10;
+  z-index: 50;
   padding: 10px;
 }
 .skip:focus {
@@ -488,9 +492,7 @@ textarea {
     gap: 30px;
     grid-template-columns: 1.1fr 1fr;
   }
-  .hero-photo {
-    min-height: 380px;
-  }
+
   .cards {
     gap: 12px;
   }
@@ -511,16 +513,18 @@ textarea {
   }
 }
 @media (max-width: 680px) {
+  html {
+    scroll-padding-top: 155px;
+  }
   body {
     font-size: 16px;
   }
-  .wrap,
-  .site-header {
+  .wrap {
     width: calc(100% - 40px);
   }
   .site-header {
     flex-wrap: wrap;
-    padding: 18px 0;
+    padding: 18px 20px;
     gap: 18px;
   }
   .site-header nav {
@@ -538,10 +542,10 @@ textarea {
   }
   .hero-photo {
     min-height: 0;
-    height: 300px;
+    height: auto;
   }
   .hero-photo img {
-    height: 300px;
+    height: auto;
     object-position: center 65%;
   }
   .hero .eyebrow {
